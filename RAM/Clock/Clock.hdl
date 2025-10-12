@@ -1,0 +1,28 @@
+/*
+* На вход подается 16-битное число period и флаг сброса часов reset.
+
+* У чипа два выхода:
+* 1. ticks (0 ≤ ticks < period) — сколько тиков прошло с начала периода,
+* 2. loop — равен единице, когда ticks равен нулю.
+* 
+* Если предыдущее значение ticks оказывается за пределами корректных 
+* значений (из-за уменьшения period), нужно вернуть ticks=0, loop=1
+*/
+CHIP Clock {
+    IN period[16], reset;
+    OUT ticks[16], loop;
+
+    PARTS:
+    Inc16(in=currentTicks, out=incrementedTicks);
+    Not16(in=incrementedTicks, out=negatedTicks);
+    Add16(a=period, b=negatedTicks, out=tickDifference, out[15]=isTicksGreaterThanPeriod);
+    Not(in=isTicksGreaterThanPeriod, out=isTicksLessThanPeriod);
+    Not(in=reset, out=notReset);
+    And(a=notReset, b=isTicksLessThanPeriod, out=continueIncrementing);
+    Mux16(a=false, b=incrementedTicks, sel=continueIncrementing, out=updatedTicks);
+    DFF(in=isTicksGreaterThanPeriod, out=previousTickOverflow);
+    DFF(in=reset, out=previousReset);
+    Or(a=previousTickOverflow, b=previousReset, out=loop);
+    Register(in=updatedTicks, load=true, out=ticks, out=currentTicks);
+
+}

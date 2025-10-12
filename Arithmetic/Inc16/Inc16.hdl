@@ -1,0 +1,28 @@
+// This file is part of www.nand2tetris.org
+/**
+ * 16-bit incrementer:
+ * out = in + 1 (arithmetic addition)
+ */
+
+CHIP Inc16 {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    HalfAdder(a=in[0], b=true, sum=out[0], carry=curry0);
+    HalfAdder(a=in[1], b=curry0, sum=out[1], carry=curry1);
+    HalfAdder(a=in[2], b=curry1, sum=out[2], carry=curry2);
+    HalfAdder(a=in[3], b=curry2, sum=out[3], carry=curry3);
+    HalfAdder(a=in[4], b=curry3, sum=out[4], carry=curry4);
+    HalfAdder(a=in[5], b=curry4, sum=out[5], carry=curry5);
+    HalfAdder(a=in[6], b=curry5, sum=out[6], carry=curry6);
+    HalfAdder(a=in[7], b=curry6, sum=out[7], carry=curry7);
+    HalfAdder(a=in[8], b=curry7, sum=out[8], carry=curry8);
+    HalfAdder(a=in[9], b=curry8, sum=out[9], carry=curry9);
+    HalfAdder(a=in[10], b=curry9, sum=out[10], carry=curry10);
+    HalfAdder(a=in[11], b=curry10, sum=out[11], carry=curry11);
+    HalfAdder(a=in[12], b=curry11, sum=out[12], carry=curry12);
+    HalfAdder(a=in[13], b=curry12, sum=out[13], carry=curry13);
+    HalfAdder(a=in[14], b=curry13, sum=out[14], carry=curry14);
+    Xor(a=in[15], b=curry14, out=out[15]);
+}

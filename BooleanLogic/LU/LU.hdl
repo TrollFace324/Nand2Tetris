@@ -1,0 +1,33 @@
+/**
+ * Logic Unit gate: 
+ * sel — определяет, какую операцию нужно применять:
+ *      And16   if sel == 00
+ *      Or16    if sel == 01
+ *      Nand16  if sel == 10
+ *      Nor16   if sel == 11
+ * negateA — нужно ли предварительно применить отрицание ко входу A перед применение операции
+ * negateB — нужно ли предварительно применить отрицание ко входу B перед применение операции
+ */
+
+CHIP LU {
+    IN a[16], b[16], sel[2], negateA, negateB;
+    OUT out[16];
+
+    PARTS:
+    // Reverse a or b
+    Not16(in=a, out=nota);
+    Not16(in=b, out=notb);
+
+    Mux16(a=a, b=nota, sel=negateA, out=a1);
+    Mux16(a=b, b=notb, sel=negateB, out=b1);
+
+    // Logic operation
+    And16(a=a1, b=b1, out=andRes);
+    Or16(a=a1, b=b1, out=orRes);
+    Nand16(a=a1, b=b1, out=nandRes);
+    Nor16(a=a1, b=b1, out=norRes);
+
+    // Choosing
+    Mux4Way16(a=andRes, b=orRes, c=nandRes, d=norRes, sel=sel, out=out);
+}
+

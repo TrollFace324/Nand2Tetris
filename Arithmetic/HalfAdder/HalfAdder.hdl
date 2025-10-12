@@ -1,0 +1,20 @@
+/**
+ * Computes the sum of two bits.
+ */
+
+CHIP HalfAdder {
+    IN a, b;    // 1-bit inputs
+    OUT sum,    // Right bit of a + b 
+        carry;  // Left bit of a + b
+
+	PARTS:
+	Nand(a=a, b=b, out=N);
+
+    // sum (xor)
+    Nand(a=a, b=N, out=C1);
+    Nand(a=b, b=N, out=C2);
+    Nand(a=C1, b=C2, out=sum);
+
+    // carry (and)
+    Nand(a=N, b=N, out=carry);
+}

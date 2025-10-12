@@ -1,0 +1,245 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    // not Sel1 and not Sel0
+    Nand(a=sel[1], b=sel[1], out=nSel1);
+    Nand(a=sel[0], b=sel[0], out=nSel0);
+
+    // ------------------- i-0 -------------------
+    Nand(a=nSel0, b=a[0], out=NA0);
+    Nand(a=sel[0], b=b[0], out=NB0);
+    Nand(a=NA0, b=NB0, out=TAB0);
+    Nand(a=nSel1, b=TAB0, out=PAB0);
+
+    Nand(a=nSel0, b=c[0], out=NC0);
+    Nand(a=sel[0], b=d[0], out=ND0);
+    Nand(a=NC0, b=ND0, out=TCD0);
+    Nand(a=sel[1], b=TCD0, out=PCD0);
+
+    Nand(a=PAB0, b=PCD0, out=out[0]);
+
+
+    // ------------------- i-1 -------------------
+    Nand(a=nSel0, b=a[1], out=NA1);
+    Nand(a=sel[0], b=b[1], out=NB1);
+    Nand(a=NA1, b=NB1, out=TAB1);
+    Nand(a=nSel1, b=TAB1, out=PAB1);
+
+    Nand(a=nSel0, b=c[1], out=NC1);
+    Nand(a=sel[0], b=d[1], out=ND1);
+    Nand(a=NC1, b=ND1, out=TCD1);
+    Nand(a=sel[1], b=TCD1, out=PCD1);
+
+    Nand(a=PAB1, b=PCD1, out=out[1]);
+
+
+    // ------------------- i-2 -------------------
+    Nand(a=nSel0, b=a[2], out=NA2);
+    Nand(a=sel[0], b=b[2], out=NB2);
+    Nand(a=NA2, b=NB2, out=TAB2);
+    Nand(a=nSel1, b=TAB2, out=PAB2);
+
+    Nand(a=nSel0, b=c[2], out=NC2);
+    Nand(a=sel[0], b=d[2], out=ND2);
+    Nand(a=NC2, b=ND2, out=TCD2);
+    Nand(a=sel[1], b=TCD2, out=PCD2);
+
+    Nand(a=PAB2, b=PCD2, out=out[2]);
+
+
+    // ------------------- i-3 -------------------
+    Nand(a=nSel0, b=a[3], out=NA3);
+    Nand(a=sel[0], b=b[3], out=NB3);
+    Nand(a=NA3, b=NB3, out=TAB3);
+    Nand(a=nSel1, b=TAB3, out=PAB3);
+
+    Nand(a=nSel0, b=c[3], out=NC3);
+    Nand(a=sel[0], b=d[3], out=ND3);
+    Nand(a=NC3, b=ND3, out=TCD3);
+    Nand(a=sel[1], b=TCD3, out=PCD3);
+
+    Nand(a=PAB3, b=PCD3, out=out[3]);
+
+
+    // ------------------- i-4 -------------------
+    Nand(a=nSel0, b=a[4], out=NA4);
+    Nand(a=sel[0], b=b[4], out=NB4);
+    Nand(a=NA4, b=NB4, out=TAB4);
+    Nand(a=nSel1, b=TAB4, out=PAB4);
+
+    Nand(a=nSel0, b=c[4], out=NC4);
+    Nand(a=sel[0], b=d[4], out=ND4);
+    Nand(a=NC4, b=ND4, out=TCD4);
+    Nand(a=sel[1], b=TCD4, out=PCD4);
+
+    Nand(a=PAB4, b=PCD4, out=out[4]);
+
+
+    // ------------------- i-5 -------------------
+    Nand(a=nSel0, b=a[5], out=NA5);
+    Nand(a=sel[0], b=b[5], out=NB5);
+    Nand(a=NA5, b=NB5, out=TAB5);
+    Nand(a=nSel1, b=TAB5, out=PAB5);
+
+    Nand(a=nSel0, b=c[5], out=NC5);
+    Nand(a=sel[0], b=d[5], out=ND5);
+    Nand(a=NC5, b=ND5, out=TCD5);
+    Nand(a=sel[1], b=TCD5, out=PCD5);
+
+    Nand(a=PAB5, b=PCD5, out=out[5]);
+
+
+    // ------------------- i-6 -------------------
+    Nand(a=nSel0, b=a[6], out=NA6);
+    Nand(a=sel[0], b=b[6], out=NB6);
+    Nand(a=NA6, b=NB6, out=TAB6);
+    Nand(a=nSel1, b=TAB6, out=PAB6);
+
+    Nand(a=nSel0, b=c[6], out=NC6);
+    Nand(a=sel[0], b=d[6], out=ND6);
+    Nand(a=NC6, b=ND6, out=TCD6);
+    Nand(a=sel[1], b=TCD6, out=PCD6);
+
+    Nand(a=PAB6, b=PCD6, out=out[6]);
+
+
+    // ------------------- i-7 -------------------
+    Nand(a=nSel0, b=a[7], out=NA7);
+    Nand(a=sel[0], b=b[7], out=NB7);
+    Nand(a=NA7, b=NB7, out=TAB7);
+    Nand(a=nSel1, b=TAB7, out=PAB7);
+
+    Nand(a=nSel0, b=c[7], out=NC7);
+    Nand(a=sel[0], b=d[7], out=ND7);
+    Nand(a=NC7, b=ND7, out=TCD7);
+    Nand(a=sel[1], b=TCD7, out=PCD7);
+
+    Nand(a=PAB7, b=PCD7, out=out[7]);
+
+
+    // ------------------- i-8 -------------------
+    Nand(a=nSel0, b=a[8], out=NA8);
+    Nand(a=sel[0], b=b[8], out=NB8);
+    Nand(a=NA8, b=NB8, out=TAB8);
+    Nand(a=nSel1, b=TAB8, out=PAB8);
+
+    Nand(a=nSel0, b=c[8], out=NC8);
+    Nand(a=sel[0], b=d[8], out=ND8);
+    Nand(a=NC8, b=ND8, out=TCD8);
+    Nand(a=sel[1], b=TCD8, out=PCD8);
+
+    Nand(a=PAB8, b=PCD8, out=out[8]);
+
+
+    // ------------------- i-9 -------------------
+    Nand(a=nSel0, b=a[9], out=NA9);
+    Nand(a=sel[0], b=b[9], out=NB9);
+    Nand(a=NA9, b=NB9, out=TAB9);
+    Nand(a=nSel1, b=TAB9, out=PAB9);
+
+    Nand(a=nSel0, b=c[9], out=NC9);
+    Nand(a=sel[0], b=d[9], out=ND9);
+    Nand(a=NC9, b=ND9, out=TCD9);
+    Nand(a=sel[1], b=TCD9, out=PCD9);
+
+    Nand(a=PAB9, b=PCD9, out=out[9]);
+
+
+    // ------------------- i-10 -------------------
+    Nand(a=nSel0, b=a[10], out=NA10);
+    Nand(a=sel[0], b=b[10], out=NB10);
+    Nand(a=NA10, b=NB10, out=TAB10);
+    Nand(a=nSel1, b=TAB10, out=PAB10);
+
+    Nand(a=nSel0, b=c[10], out=NC10);
+    Nand(a=sel[0], b=d[10], out=ND10);
+    Nand(a=NC10, b=ND10, out=TCD10);
+    Nand(a=sel[1], b=TCD10, out=PCD10);
+
+    Nand(a=PAB10, b=PCD10, out=out[10]);
+
+
+    // ------------------- i-11 -------------------
+    Nand(a=nSel0, b=a[11], out=NA11);
+    Nand(a=sel[0], b=b[11], out=NB11);
+    Nand(a=NA11, b=NB11, out=TAB11);
+    Nand(a=nSel1, b=TAB11, out=PAB11);
+
+    Nand(a=nSel0, b=c[11], out=NC11);
+    Nand(a=sel[0], b=d[11], out=ND11);
+    Nand(a=NC11, b=ND11, out=TCD11);
+    Nand(a=sel[1], b=TCD11, out=PCD11);
+
+    Nand(a=PAB11, b=PCD11, out=out[11]);
+
+
+    // ------------------- i-12 -------------------
+    Nand(a=nSel0, b=a[12], out=NA12);
+    Nand(a=sel[0], b=b[12], out=NB12);
+    Nand(a=NA12, b=NB12, out=TAB12);
+    Nand(a=nSel1, b=TAB12, out=PAB12);
+
+    Nand(a=nSel0, b=c[12], out=NC12);
+    Nand(a=sel[0], b=d[12], out=ND12);
+    Nand(a=NC12, b=ND12, out=TCD12);
+    Nand(a=sel[1], b=TCD12, out=PCD12);
+
+    Nand(a=PAB12, b=PCD12, out=out[12]);
+
+
+    // ------------------- i-13 -------------------
+    Nand(a=nSel0, b=a[13], out=NA13);
+    Nand(a=sel[0], b=b[13], out=NB13);
+    Nand(a=NA13, b=NB13, out=TAB13);
+    Nand(a=nSel1, b=TAB13, out=PAB13);
+
+    Nand(a=nSel0, b=c[13], out=NC13);
+    Nand(a=sel[0], b=d[13], out=ND13);
+    Nand(a=NC13, b=ND13, out=TCD13);
+    Nand(a=sel[1], b=TCD13, out=PCD13);
+
+    Nand(a=PAB13, b=PCD13, out=out[13]);
+
+
+    // ------------------- i-14 -------------------
+    Nand(a=nSel0, b=a[14], out=NA14);
+    Nand(a=sel[0], b=b[14], out=NB14);
+    Nand(a=NA14, b=NB14, out=TAB14);
+    Nand(a=nSel1, b=TAB14, out=PAB14);
+
+    Nand(a=nSel0, b=c[14], out=NC14);
+    Nand(a=sel[0], b=d[14], out=ND14);
+    Nand(a=NC14, b=ND14, out=TCD14);
+    Nand(a=sel[1], b=TCD14, out=PCD14);
+
+    Nand(a=PAB14, b=PCD14, out=out[14]);
+
+
+    // ------------------- i-15 -------------------
+    Nand(a=nSel0, b=a[15], out=NA15);
+    Nand(a=sel[0], b=b[15], out=NB15);
+    Nand(a=NA15, b=NB15, out=TAB15);
+    Nand(a=nSel1, b=TAB15, out=PAB15);
+
+    Nand(a=nSel0, b=c[15], out=NC15);
+    Nand(a=sel[0], b=d[15], out=ND15);
+    Nand(a=NC15, b=ND15, out=TCD15);
+    Nand(a=sel[1], b=TCD15, out=PCD15);
+
+    Nand(a=PAB15, b=PCD15, out=out[15]);
+}

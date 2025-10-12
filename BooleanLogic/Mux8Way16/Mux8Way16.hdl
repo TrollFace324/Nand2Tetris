@@ -1,0 +1,615 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux8Way16.hdl
+
+/**
+ * 8-way 16-bit multiplexor:
+ * out = a if sel == 000
+ *       b if sel == 001
+ *       etc.
+ *       h if sel == 111
+ */
+
+CHIP Mux8Way16 {
+    IN a[16], b[16], c[16], d[16],
+       e[16], f[16], g[16], h[16],
+       sel[3];
+    OUT out[16];
+
+    PARTS:
+    Nand(a=sel[0], b=sel[0], out=nSel0);
+    Nand(a=sel[1], b=sel[1], out=nSel1);
+    Nand(a=sel[2], b=sel[2], out=nSel2);
+
+    // ---------------------- i-0 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[0], out=L110);
+    Nand(a=sel[0], b=b[0], out=L210);
+    Nand(a=nSel0, b=c[0], out=L310);
+    Nand(a=sel[0], b=d[0], out=L410);
+
+    Nand(a=L110, b=L210, out=T110);
+    Nand(a=L310, b=L410, out=T210);
+
+    Nand(a=nSel1, b=T110, out=M110);
+    Nand(a=sel[1], b=T210, out=M210);
+
+    Nand(a=M110, b=M210, out=C10);
+
+    Nand(a=nSel2, b=C10, out=Z10);
+
+    // Right part
+    Nand(a=nSel0, b=e[0], out=L120);
+    Nand(a=sel[0], b=f[0], out=L220);
+    Nand(a=nSel0, b=g[0], out=L320);
+    Nand(a=sel[0], b=h[0], out=L420);
+
+    Nand(a=L120, b=L220, out=T120);
+    Nand(a=L320, b=L420, out=T220);
+
+    Nand(a=nSel1, b=T120, out=M120);
+    Nand(a=sel[1], b=T220, out=M220);
+
+    Nand(a=M120, b=M220, out=C20);
+
+    Nand(a=sel[2], b=C20, out=Z20);
+
+    // out
+    Nand(a=Z10, b=Z20, out=out[0]);
+
+
+    // ---------------------- i-1 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[1], out=L111);
+    Nand(a=sel[0], b=b[1], out=L211);
+    Nand(a=nSel0, b=c[1], out=L311);
+    Nand(a=sel[0], b=d[1], out=L411);
+
+    Nand(a=L111, b=L211, out=T111);
+    Nand(a=L311, b=L411, out=T211);
+
+    Nand(a=nSel1, b=T111, out=M111);
+    Nand(a=sel[1], b=T211, out=M211);
+
+    Nand(a=M111, b=M211, out=C11);
+
+    Nand(a=nSel2, b=C11, out=Z11);
+
+    // Right part
+    Nand(a=nSel0, b=e[1], out=L121);
+    Nand(a=sel[0], b=f[1], out=L221);
+    Nand(a=nSel0, b=g[1], out=L321);
+    Nand(a=sel[0], b=h[1], out=L421);
+
+    Nand(a=L121, b=L221, out=T121);
+    Nand(a=L321, b=L421, out=T221);
+
+    Nand(a=nSel1, b=T121, out=M121);
+    Nand(a=sel[1], b=T221, out=M221);
+
+    Nand(a=M121, b=M221, out=C21);
+
+    Nand(a=sel[2], b=C21, out=Z21);
+
+    // out
+    Nand(a=Z11, b=Z21, out=out[1]);
+
+
+    // ---------------------- i-2 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[2], out=L112);
+    Nand(a=sel[0], b=b[2], out=L212);
+    Nand(a=nSel0, b=c[2], out=L312);
+    Nand(a=sel[0], b=d[2], out=L412);
+
+    Nand(a=L112, b=L212, out=T112);
+    Nand(a=L312, b=L412, out=T212);
+
+    Nand(a=nSel1, b=T112, out=M112);
+    Nand(a=sel[1], b=T212, out=M212);
+
+    Nand(a=M112, b=M212, out=C12);
+
+    Nand(a=nSel2, b=C12, out=Z12);
+
+    // Right part
+    Nand(a=nSel0, b=e[2], out=L122);
+    Nand(a=sel[0], b=f[2], out=L222);
+    Nand(a=nSel0, b=g[2], out=L322);
+    Nand(a=sel[0], b=h[2], out=L422);
+
+    Nand(a=L122, b=L222, out=T122);
+    Nand(a=L322, b=L422, out=T222);
+
+    Nand(a=nSel1, b=T122, out=M122);
+    Nand(a=sel[1], b=T222, out=M222);
+
+    Nand(a=M122, b=M222, out=C22);
+
+    Nand(a=sel[2], b=C22, out=Z22);
+
+    // out
+    Nand(a=Z12, b=Z22, out=out[2]);
+
+
+    // ---------------------- i-3 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[3], out=L113);
+    Nand(a=sel[0], b=b[3], out=L213);
+    Nand(a=nSel0, b=c[3], out=L313);
+    Nand(a=sel[0], b=d[3], out=L413);
+
+    Nand(a=L113, b=L213, out=T113);
+    Nand(a=L313, b=L413, out=T213);
+
+    Nand(a=nSel1, b=T113, out=M113);
+    Nand(a=sel[1], b=T213, out=M213);
+
+    Nand(a=M113, b=M213, out=C13);
+
+    Nand(a=nSel2, b=C13, out=Z13);
+
+    // Right part
+    Nand(a=nSel0, b=e[3], out=L123);
+    Nand(a=sel[0], b=f[3], out=L223);
+    Nand(a=nSel0, b=g[3], out=L323);
+    Nand(a=sel[0], b=h[3], out=L423);
+
+    Nand(a=L123, b=L223, out=T123);
+    Nand(a=L323, b=L423, out=T223);
+
+    Nand(a=nSel1, b=T123, out=M123);
+    Nand(a=sel[1], b=T223, out=M223);
+
+    Nand(a=M123, b=M223, out=C23);
+
+    Nand(a=sel[2], b=C23, out=Z23);
+
+    // out
+    Nand(a=Z13, b=Z23, out=out[3]);
+
+
+    // ---------------------- i-4 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[4], out=L114);
+    Nand(a=sel[0], b=b[4], out=L214);
+    Nand(a=nSel0, b=c[4], out=L314);
+    Nand(a=sel[0], b=d[4], out=L414);
+
+    Nand(a=L114, b=L214, out=T114);
+    Nand(a=L314, b=L414, out=T214);
+
+    Nand(a=nSel1, b=T114, out=M114);
+    Nand(a=sel[1], b=T214, out=M214);
+
+    Nand(a=M114, b=M214, out=C14);
+
+    Nand(a=nSel2, b=C14, out=Z14);
+
+    // Right part
+    Nand(a=nSel0, b=e[4], out=L124);
+    Nand(a=sel[0], b=f[4], out=L224);
+    Nand(a=nSel0, b=g[4], out=L324);
+    Nand(a=sel[0], b=h[4], out=L424);
+
+    Nand(a=L124, b=L224, out=T124);
+    Nand(a=L324, b=L424, out=T224);
+
+    Nand(a=nSel1, b=T124, out=M124);
+    Nand(a=sel[1], b=T224, out=M224);
+
+    Nand(a=M124, b=M224, out=C24);
+
+    Nand(a=sel[2], b=C24, out=Z24);
+
+    // out
+    Nand(a=Z14, b=Z24, out=out[4]);
+
+
+    // ---------------------- i-5 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[5], out=L115);
+    Nand(a=sel[0], b=b[5], out=L215);
+    Nand(a=nSel0, b=c[5], out=L315);
+    Nand(a=sel[0], b=d[5], out=L415);
+
+    Nand(a=L115, b=L215, out=T115);
+    Nand(a=L315, b=L415, out=T215);
+
+    Nand(a=nSel1, b=T115, out=M115);
+    Nand(a=sel[1], b=T215, out=M215);
+
+    Nand(a=M115, b=M215, out=C15);
+
+    Nand(a=nSel2, b=C15, out=Z15);
+
+    // Right part
+    Nand(a=nSel0, b=e[5], out=L125);
+    Nand(a=sel[0], b=f[5], out=L225);
+    Nand(a=nSel0, b=g[5], out=L325);
+    Nand(a=sel[0], b=h[5], out=L425);
+
+    Nand(a=L125, b=L225, out=T125);
+    Nand(a=L325, b=L425, out=T225);
+
+    Nand(a=nSel1, b=T125, out=M125);
+    Nand(a=sel[1], b=T225, out=M225);
+
+    Nand(a=M125, b=M225, out=C25);
+
+    Nand(a=sel[2], b=C25, out=Z25);
+
+    // out
+    Nand(a=Z15, b=Z25, out=out[5]);
+
+
+    // ---------------------- i-6 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[6], out=L116);
+    Nand(a=sel[0], b=b[6], out=L216);
+    Nand(a=nSel0, b=c[6], out=L316);
+    Nand(a=sel[0], b=d[6], out=L416);
+
+    Nand(a=L116, b=L216, out=T116);
+    Nand(a=L316, b=L416, out=T216);
+
+    Nand(a=nSel1, b=T116, out=M116);
+    Nand(a=sel[1], b=T216, out=M216);
+
+    Nand(a=M116, b=M216, out=C16);
+
+    Nand(a=nSel2, b=C16, out=Z16);
+
+    // Right part
+    Nand(a=nSel0, b=e[6], out=L126);
+    Nand(a=sel[0], b=f[6], out=L226);
+    Nand(a=nSel0, b=g[6], out=L326);
+    Nand(a=sel[0], b=h[6], out=L426);
+
+    Nand(a=L126, b=L226, out=T126);
+    Nand(a=L326, b=L426, out=T226);
+
+    Nand(a=nSel1, b=T126, out=M126);
+    Nand(a=sel[1], b=T226, out=M226);
+
+    Nand(a=M126, b=M226, out=C26);
+
+    Nand(a=sel[2], b=C26, out=Z26);
+
+    // out
+    Nand(a=Z16, b=Z26, out=out[6]);
+
+
+    // ---------------------- i-7 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[7], out=L117);
+    Nand(a=sel[0], b=b[7], out=L217);
+    Nand(a=nSel0, b=c[7], out=L317);
+    Nand(a=sel[0], b=d[7], out=L417);
+
+    Nand(a=L117, b=L217, out=T117);
+    Nand(a=L317, b=L417, out=T217);
+
+    Nand(a=nSel1, b=T117, out=M117);
+    Nand(a=sel[1], b=T217, out=M217);
+
+    Nand(a=M117, b=M217, out=C17);
+
+    Nand(a=nSel2, b=C17, out=Z17);
+
+    // Right part
+    Nand(a=nSel0, b=e[7], out=L127);
+    Nand(a=sel[0], b=f[7], out=L227);
+    Nand(a=nSel0, b=g[7], out=L327);
+    Nand(a=sel[0], b=h[7], out=L427);
+
+    Nand(a=L127, b=L227, out=T127);
+    Nand(a=L327, b=L427, out=T227);
+
+    Nand(a=nSel1, b=T127, out=M127);
+    Nand(a=sel[1], b=T227, out=M227);
+
+    Nand(a=M127, b=M227, out=C27);
+
+    Nand(a=sel[2], b=C27, out=Z27);
+
+    // out
+    Nand(a=Z17, b=Z27, out=out[7]);
+
+
+    // ---------------------- i-8 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[8], out=L118);
+    Nand(a=sel[0], b=b[8], out=L218);
+    Nand(a=nSel0, b=c[8], out=L318);
+    Nand(a=sel[0], b=d[8], out=L418);
+
+    Nand(a=L118, b=L218, out=T118);
+    Nand(a=L318, b=L418, out=T218);
+
+    Nand(a=nSel1, b=T118, out=M118);
+    Nand(a=sel[1], b=T218, out=M218);
+
+    Nand(a=M118, b=M218, out=C18);
+
+    Nand(a=nSel2, b=C18, out=Z18);
+
+    // Right part
+    Nand(a=nSel0, b=e[8], out=L128);
+    Nand(a=sel[0], b=f[8], out=L228);
+    Nand(a=nSel0, b=g[8], out=L328);
+    Nand(a=sel[0], b=h[8], out=L428);
+
+    Nand(a=L128, b=L228, out=T128);
+    Nand(a=L328, b=L428, out=T228);
+
+    Nand(a=nSel1, b=T128, out=M128);
+    Nand(a=sel[1], b=T228, out=M228);
+
+    Nand(a=M128, b=M228, out=C28);
+
+    Nand(a=sel[2], b=C28, out=Z28);
+
+    // out
+    Nand(a=Z18, b=Z28, out=out[8]);
+
+
+    // ---------------------- i-9 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[9], out=L119);
+    Nand(a=sel[0], b=b[9], out=L219);
+    Nand(a=nSel0, b=c[9], out=L319);
+    Nand(a=sel[0], b=d[9], out=L419);
+
+    Nand(a=L119, b=L219, out=T119);
+    Nand(a=L319, b=L419, out=T219);
+
+    Nand(a=nSel1, b=T119, out=M119);
+    Nand(a=sel[1], b=T219, out=M219);
+
+    Nand(a=M119, b=M219, out=C19);
+
+    Nand(a=nSel2, b=C19, out=Z19);
+
+    // Right part
+    Nand(a=nSel0, b=e[9], out=L129);
+    Nand(a=sel[0], b=f[9], out=L229);
+    Nand(a=nSel0, b=g[9], out=L329);
+    Nand(a=sel[0], b=h[9], out=L429);
+
+    Nand(a=L129, b=L229, out=T129);
+    Nand(a=L329, b=L429, out=T229);
+
+    Nand(a=nSel1, b=T129, out=M129);
+    Nand(a=sel[1], b=T229, out=M229);
+
+    Nand(a=M129, b=M229, out=C29);
+
+    Nand(a=sel[2], b=C29, out=Z29);
+
+    // out
+    Nand(a=Z19, b=Z29, out=out[9]);
+
+
+    // ---------------------- i-10 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[10], out=L1110);
+    Nand(a=sel[0], b=b[10], out=L2110);
+    Nand(a=nSel0, b=c[10], out=L3110);
+    Nand(a=sel[0], b=d[10], out=L4110);
+
+    Nand(a=L1110, b=L2110, out=T1110);
+    Nand(a=L3110, b=L4110, out=T2110);
+
+    Nand(a=nSel1, b=T1110, out=M1110);
+    Nand(a=sel[1], b=T2110, out=M2110);
+
+    Nand(a=M1110, b=M2110, out=C110);
+
+    Nand(a=nSel2, b=C110, out=Z110);
+
+    // Right part
+    Nand(a=nSel0, b=e[10], out=L1210);
+    Nand(a=sel[0], b=f[10], out=L2210);
+    Nand(a=nSel0, b=g[10], out=L3210);
+    Nand(a=sel[0], b=h[10], out=L4210);
+
+    Nand(a=L1210, b=L2210, out=T1210);
+    Nand(a=L3210, b=L4210, out=T2210);
+
+    Nand(a=nSel1, b=T1210, out=M1210);
+    Nand(a=sel[1], b=T2210, out=M2210);
+
+    Nand(a=M1210, b=M2210, out=C210);
+
+    Nand(a=sel[2], b=C210, out=Z210);
+
+    // out
+    Nand(a=Z110, b=Z210, out=out[10]);
+
+
+    // ---------------------- i-11 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[11], out=L1111);
+    Nand(a=sel[0], b=b[11], out=L2111);
+    Nand(a=nSel0, b=c[11], out=L3111);
+    Nand(a=sel[0], b=d[11], out=L4111);
+
+    Nand(a=L1111, b=L2111, out=T1111);
+    Nand(a=L3111, b=L4111, out=T2111);
+
+    Nand(a=nSel1, b=T1111, out=M1111);
+    Nand(a=sel[1], b=T2111, out=M2111);
+
+    Nand(a=M1111, b=M2111, out=C111);
+
+    Nand(a=nSel2, b=C111, out=Z111);
+
+    // Right part
+    Nand(a=nSel0, b=e[11], out=L1211);
+    Nand(a=sel[0], b=f[11], out=L2211);
+    Nand(a=nSel0, b=g[11], out=L3211);
+    Nand(a=sel[0], b=h[11], out=L4211);
+
+    Nand(a=L1211, b=L2211, out=T1211);
+    Nand(a=L3211, b=L4211, out=T2211);
+
+    Nand(a=nSel1, b=T1211, out=M1211);
+    Nand(a=sel[1], b=T2211, out=M2211);
+
+    Nand(a=M1211, b=M2211, out=C211);
+
+    Nand(a=sel[2], b=C211, out=Z211);
+
+    // out
+    Nand(a=Z111, b=Z211, out=out[11]);
+
+
+    // ---------------------- i-12 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[12], out=L1112);
+    Nand(a=sel[0], b=b[12], out=L2112);
+    Nand(a=nSel0, b=c[12], out=L3112);
+    Nand(a=sel[0], b=d[12], out=L4112);
+
+    Nand(a=L1112, b=L2112, out=T1112);
+    Nand(a=L3112, b=L4112, out=T2112);
+
+    Nand(a=nSel1, b=T1112, out=M1112);
+    Nand(a=sel[1], b=T2112, out=M2112);
+
+    Nand(a=M1112, b=M2112, out=C112);
+
+    Nand(a=nSel2, b=C112, out=Z112);
+
+    // Right part
+    Nand(a=nSel0, b=e[12], out=L1212);
+    Nand(a=sel[0], b=f[12], out=L2212);
+    Nand(a=nSel0, b=g[12], out=L3212);
+    Nand(a=sel[0], b=h[12], out=L4212);
+
+    Nand(a=L1212, b=L2212, out=T1212);
+    Nand(a=L3212, b=L4212, out=T2212);
+
+    Nand(a=nSel1, b=T1212, out=M1212);
+    Nand(a=sel[1], b=T2212, out=M2212);
+
+    Nand(a=M1212, b=M2212, out=C212);
+
+    Nand(a=sel[2], b=C212, out=Z212);
+
+    // out
+    Nand(a=Z112, b=Z212, out=out[12]);
+
+
+    // ---------------------- i-13 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[13], out=L1113);
+    Nand(a=sel[0], b=b[13], out=L2113);
+    Nand(a=nSel0, b=c[13], out=L3113);
+    Nand(a=sel[0], b=d[13], out=L4113);
+
+    Nand(a=L1113, b=L2113, out=T1113);
+    Nand(a=L3113, b=L4113, out=T2113);
+
+    Nand(a=nSel1, b=T1113, out=M1113);
+    Nand(a=sel[1], b=T2113, out=M2113);
+
+    Nand(a=M1113, b=M2113, out=C113);
+
+    Nand(a=nSel2, b=C113, out=Z113);
+
+    // Right part
+    Nand(a=nSel0, b=e[13], out=L1213);
+    Nand(a=sel[0], b=f[13], out=L2213);
+    Nand(a=nSel0, b=g[13], out=L3213);
+    Nand(a=sel[0], b=h[13], out=L4213);
+
+    Nand(a=L1213, b=L2213, out=T1213);
+    Nand(a=L3213, b=L4213, out=T2213);
+
+    Nand(a=nSel1, b=T1213, out=M1213);
+    Nand(a=sel[1], b=T2213, out=M2213);
+
+    Nand(a=M1213, b=M2213, out=C213);
+
+    Nand(a=sel[2], b=C213, out=Z213);
+
+    // out
+    Nand(a=Z113, b=Z213, out=out[13]);
+
+
+    // ---------------------- i-14 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[14], out=L1114);
+    Nand(a=sel[0], b=b[14], out=L2114);
+    Nand(a=nSel0, b=c[14], out=L3114);
+    Nand(a=sel[0], b=d[14], out=L4114);
+
+    Nand(a=L1114, b=L2114, out=T1114);
+    Nand(a=L3114, b=L4114, out=T2114);
+
+    Nand(a=nSel1, b=T1114, out=M1114);
+    Nand(a=sel[1], b=T2114, out=M2114);
+
+    Nand(a=M1114, b=M2114, out=C114);
+
+    Nand(a=nSel2, b=C114, out=Z114);
+
+    // Right part
+    Nand(a=nSel0, b=e[14], out=L1214);
+    Nand(a=sel[0], b=f[14], out=L2214);
+    Nand(a=nSel0, b=g[14], out=L3214);
+    Nand(a=sel[0], b=h[14], out=L4214);
+
+    Nand(a=L1214, b=L2214, out=T1214);
+    Nand(a=L3214, b=L4214, out=T2214);
+
+    Nand(a=nSel1, b=T1214, out=M1214);
+    Nand(a=sel[1], b=T2214, out=M2214);
+
+    Nand(a=M1214, b=M2214, out=C214);
+
+    Nand(a=sel[2], b=C214, out=Z214);
+
+    // out
+    Nand(a=Z114, b=Z214, out=out[14]);
+
+
+    // ---------------------- i-15 ----------------------
+    // Left part
+    Nand(a=nSel0, b=a[15], out=L1115);
+    Nand(a=sel[0], b=b[15], out=L2115);
+    Nand(a=nSel0, b=c[15], out=L3115);
+    Nand(a=sel[0], b=d[15], out=L4115);
+
+    Nand(a=L1115, b=L2115, out=T1115);
+    Nand(a=L3115, b=L4115, out=T2115);
+
+    Nand(a=nSel1, b=T1115, out=M1115);
+    Nand(a=sel[1], b=T2115, out=M2115);
+
+    Nand(a=M1115, b=M2115, out=C115);
+
+    Nand(a=nSel2, b=C115, out=Z115);
+
+    // Right part
+    Nand(a=nSel0, b=e[15], out=L1215);
+    Nand(a=sel[0], b=f[15], out=L2215);
+    Nand(a=nSel0, b=g[15], out=L3215);
+    Nand(a=sel[0], b=h[15], out=L4215);
+
+    Nand(a=L1215, b=L2215, out=T1215);
+    Nand(a=L3215, b=L4215, out=T2215);
+
+    Nand(a=nSel1, b=T1215, out=M1215);
+    Nand(a=sel[1], b=T2215, out=M2215);
+
+    Nand(a=M1215, b=M2215, out=C215);
+
+    Nand(a=sel[2], b=C215, out=Z215);
+
+    // out
+    Nand(a=Z115, b=Z215, out=out[15]);
+}

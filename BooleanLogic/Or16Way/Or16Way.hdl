@@ -1,0 +1,77 @@
+/**
+ * 16-way Or gate: out = in[0] or in[1] or ... or in[15].
+ */
+
+CHIP Or16Way {
+
+    IN  in[16];
+    OUT out;
+
+    PARTS:
+    // First step
+    Nand(a=in[0], b=in[0], out=nA0);
+    Nand(a=in[1], b=in[1], out=nA1);
+    Nand(a=nA0, b=nA1, out=A01);
+
+    Nand(a=in[2], b=in[2], out=nA2);
+    Nand(a=in[3], b=in[3], out=nA3);
+    Nand(a=nA2, b=nA3, out=A23);
+
+    Nand(a=in[4], b=in[4], out=nA4);
+    Nand(a=in[5], b=in[5], out=nA5);
+    Nand(a=nA4, b=nA5, out=A45);
+
+    Nand(a=in[6], b=in[6], out=nA6);
+    Nand(a=in[7], b=in[7], out=nA7);
+    Nand(a=nA6, b=nA7, out=A67);
+
+    Nand(a=in[8], b=in[8], out=nA8);
+    Nand(a=in[9], b=in[9], out=nA9);
+    Nand(a=nA8, b=nA9, out=A89);
+
+    Nand(a=in[10], b=in[10], out=nA10);
+    Nand(a=in[11], b=in[11], out=nA11);
+    Nand(a=nA10, b=nA11, out=A1011);
+
+    Nand(a=in[12], b=in[12], out=nA12);
+    Nand(a=in[13], b=in[13], out=nA13);
+    Nand(a=nA12, b=nA13, out=A1213);
+
+    Nand(a=in[14], b=in[14], out=nA14);
+    Nand(a=in[15], b=in[15], out=nA15);
+    Nand(a=nA14, b=nA15, out=A1415);
+
+
+    // Second step
+    Nand(a=A01, b=A01, out=nA01);
+    Nand(a=A23, b=A23, out=nA23);
+    Nand(a=nA01, b=nA23, out=A0123);
+
+    Nand(a=A45, b=A45, out=nA45);
+    Nand(a=A67, b=A67, out=nA67);
+    Nand(a=nA45, b=nA67, out=A4567);
+
+    Nand(a=A89, b=A89, out=nA89);
+    Nand(a=A1011, b=A1011, out=nA1011);
+    Nand(a=nA89, b=nA1011, out=A891011);
+
+    Nand(a=A1213, b=A1213, out=nA1213);
+    Nand(a=A1415, b=A1415, out=nA1415);
+    Nand(a=nA1213, b=nA1415, out=A12131415);
+
+
+    // Third step
+    Nand(a=A0123, b=A0123, out=nA0123);
+    Nand(a=A4567, b=A4567, out=nA4567);
+    Nand(a=nA0123, b=nA4567, out=A01234567);
+
+    Nand(a=A891011, b=A891011, out=nA891011);
+    Nand(a=A12131415, b=A12131415, out=nA12131415);
+    Nand(a=nA891011, b=nA12131415, out=A89101112131415);
+
+
+    // Fourth step
+    Nand(a=A01234567, b=A01234567, out=nA01234567);
+    Nand(a=A89101112131415, b=A89101112131415, out=nA89101112131415);
+    Nand(a=nA01234567, b=nA89101112131415, out=out);
+}

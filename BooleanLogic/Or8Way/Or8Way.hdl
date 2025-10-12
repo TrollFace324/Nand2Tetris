@@ -1,0 +1,46 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Or8Way.hdl
+
+/**
+ * 8-way Or: 
+ * out = (in[0] or in[1] or ... or in[7])
+ */
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    // First step
+    Nand(a=in[0], b=in[0], out=nA0);
+    Nand(a=in[1], b=in[1], out=nA1);
+    Nand(a=nA0, b=nA1, out=A01);
+
+    Nand(a=in[2], b=in[2], out=nA2);
+    Nand(a=in[3], b=in[3], out=nA3);
+    Nand(a=nA2, b=nA3, out=A23);
+
+    Nand(a=in[4], b=in[4], out=nA4);
+    Nand(a=in[5], b=in[5], out=nA5);
+    Nand(a=nA4, b=nA5, out=A45);
+
+    Nand(a=in[6], b=in[6], out=nA6);
+    Nand(a=in[7], b=in[7], out=nA7);
+    Nand(a=nA6, b=nA7, out=A67);
+
+    // Second step
+    Nand(a=A01, b=A01, out=nA01);
+    Nand(a=A23, b=A23, out=nA23);
+    Nand(a=nA01, b=nA23, out=A0123);
+
+    Nand(a=A45, b=A45, out=nA45);
+    Nand(a=A67, b=A67, out=nA67);
+    Nand(a=nA45, b=nA67, out=A4567);
+
+    // Third step
+    Nand(a=A0123, b=A0123, out=nA0123);
+    Nand(a=A4567, b=A4567, out=nA4567);
+    Nand(a=nA0123, b=nA4567, out=out);
+}
