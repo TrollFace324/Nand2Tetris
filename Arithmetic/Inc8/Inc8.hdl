@@ -1,0 +1,115 @@
+/**
+ * 8-bit incrementer:
+ * out = in + 1 (arithmetic addition)
+ * carryOut = arithmetic overflow bit
+ */
+
+CHIP Inc8 {
+  IN in[8];
+  OUT out[8], carryOut;
+
+  PARTS:/*
+  HalfAdder(a=in[0], b=true, sum=out[0], carry=curry0);
+  HalfAdder(a=in[1], b=curry0, sum=out[1], carry=curry1);
+  HalfAdder(a=in[2], b=curry1, sum=out[2], carry=curry2);
+  HalfAdder(a=in[3], b=curry2, sum=out[3], carry=curry3);
+  HalfAdder(a=in[4], b=curry3, sum=out[4], carry=curry4);
+  HalfAdder(a=in[5], b=curry4, sum=out[5], carry=curry5);
+  HalfAdder(a=in[6], b=curry5, sum=out[6], carry=curry6);
+	HalfAdder(a=in[7], b=curry6, sum=out[7], carry=carryOut);*/
+
+	// -------------- i-0 --------------
+  Nand(a=in[0], b=true, out=N0);
+
+  // sum (xor)
+  Nand(a=in[0], b=N0, out=C10);
+  Nand(a=true, b=N0, out=C20);
+  Nand(a=C10, b=C20, out=out[0]);
+
+  // carry (and)
+  Nand(a=N0, b=N0, out=carry0);
+
+
+  // -------------- i-1 --------------
+  Nand(a=in[1], b=carry0, out=N1);
+
+  // sum (xor)
+  Nand(a=in[1], b=N1, out=C11);
+  Nand(a=carry0, b=N1, out=C21);
+  Nand(a=C11, b=C21, out=out[1]);
+
+  // carry (and)
+  Nand(a=N1, b=N1, out=carry1);
+
+
+  // -------------- i-2 --------------
+  Nand(a=in[2], b=carry1, out=N2);
+
+  // sum (xor)
+  Nand(a=in[2], b=N2, out=C12);
+  Nand(a=carry1, b=N2, out=C22);
+  Nand(a=C12, b=C22, out=out[2]);
+
+  // carry (and)
+  Nand(a=N2, b=N2, out=carry2);
+
+
+  // -------------- i-3 --------------
+  Nand(a=in[3], b=carry2, out=N3);
+
+  // sum (xor)
+  Nand(a=in[3], b=N3, out=C13);
+  Nand(a=carry2, b=N3, out=C23);
+  Nand(a=C13, b=C23, out=out[3]);
+
+  // carry (and)
+  Nand(a=N3, b=N3, out=carry3);
+
+
+  // -------------- i-4 --------------
+  Nand(a=in[4], b=carry3, out=N4);
+
+  // sum (xor)
+  Nand(a=in[4], b=N4, out=C14);
+  Nand(a=carry3, b=N4, out=C24);
+  Nand(a=C14, b=C24, out=out[4]);
+
+  // carry (and)
+  Nand(a=N4, b=N4, out=carry4);
+
+
+  // -------------- i-5 --------------
+  Nand(a=in[5], b=carry4, out=N5);
+
+  // sum (xor)
+  Nand(a=in[5], b=N5, out=C15);
+  Nand(a=carry4, b=N5, out=C25);
+  Nand(a=C15, b=C25, out=out[5]);
+
+  // carry (and)
+  Nand(a=N5, b=N5, out=carry5);
+
+
+  // -------------- i-6 --------------
+  Nand(a=in[6], b=carry5, out=N6);
+
+  // sum (xor)
+  Nand(a=in[6], b=N6, out=C16);
+  Nand(a=carry5, b=N6, out=C26);
+  Nand(a=C16, b=C26, out=out[6]);
+
+  // carry (and)
+  Nand(a=N6, b=N6, out=carry6);
+
+
+  // -------------- i-7 --------------
+  Nand(a=in[7], b=carry6, out=N7);
+
+  // sum (xor)
+  Nand(a=in[7], b=N7, out=C17);
+  Nand(a=carry6, b=N7, out=C27);
+  Nand(a=C17, b=C27, out=out[7]);
+
+  // carry (and)
+  Nand(a=N7, b=N7, out=carryOut);
+}
