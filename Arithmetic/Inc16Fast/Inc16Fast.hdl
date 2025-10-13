@@ -1,0 +1,16 @@
+CHIP Inc16Fast {
+  IN in[16];
+  OUT out[16];
+
+  PARTS:
+  // младшие 8 бит
+  Inc8(in=in[0..7], out=out[0..7]);        // low + 1
+  // старшие 8 бит, инкремент считая перенос = 1 (предварительно)
+  Inc8(in=in[8..15], out=highInc);      // high + 1 (считаем заранее)
+
+  // сигнал "все младшие 8 бит = 1" (propagate)
+  And8Way(in=in[0..7], out=allOnesLow); // allOnesLow == 1 только если low == 0xFF
+
+  // выбрать между original high и highInc по allOnesLow
+  Mux8(a=in[8..15], b=highInc, sel=allOnesLow, out=out[8..15]);
+}

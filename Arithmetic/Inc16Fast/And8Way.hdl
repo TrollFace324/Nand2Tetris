@@ -1,0 +1,22 @@
+/**
+ * 8-way And gate.
+ * Outputs 1 only if all 8 inputs are 1.
+ */
+CHIP And8Way {
+  IN in[8];
+  OUT out;
+
+  PARTS:
+  // Первый уровень: 4 параллельных AND
+  And(a=in[0], b=in[1], out=a1);
+  And(a=in[2], b=in[3], out=a2);
+  And(a=in[4], b=in[5], out=a3);
+  And(a=in[6], b=in[7], out=a4);
+
+  // Второй уровень: 2 AND
+  And(a=a1, b=a2, out=b1);
+  And(a=a3, b=a4, out=b2);
+
+  // Третий уровень: финальное объединение
+  And(a=b1, b=b2, out=out);
+}
