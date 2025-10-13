@@ -3,14 +3,235 @@ CHIP Inc16Fast {
   OUT out[16];
 
   PARTS:
-  // младшие 8 бит
-  Inc8(in=in[0..7], out=out[0..7]);        // low + 1
-  // старшие 8 бит, инкремент считая перенос = 1 (предварительно)
-  Inc8(in=in[8..15], out=highInc);      // high + 1 (считаем заранее)
+  /*
+  // Младшие 8 бит
+  Inc8(in=in[0..7], out=out[0..7]);
 
-  // сигнал "все младшие 8 бит = 1" (propagate)
-  And8Way(in=in[0..7], out=allOnesLow); // allOnesLow == 1 только если low == 0xFF
+  // Заранее страшие 8 бит
+  Inc8(in=in[8..15], out=highInc);
 
-  // выбрать между original high и highInc по allOnesLow
+  // Проверка, есть ли +1 к старшим битам от младших
+  And8Way(in=in[0..7], out=allOnesLow);
+
+  // Выбор между high и high+1
   Mux8(a=in[8..15], b=highInc, sel=allOnesLow, out=out[8..15]);
+  */
+
+
+
+  // Младшие 8 бит
+
+  // -------------- i-0 --------------
+  Nand(a=in[0], b=true, out=N0);
+
+  // sum (xor)
+  Nand(a=in[0], b=N0, out=C10);
+  Nand(a=true, b=N0, out=C20);
+  Nand(a=C10, b=C20, out=out[0]);
+
+  // carry (and)
+  Nand(a=N0, b=N0, out=carry0);
+
+
+  // -------------- i-1 --------------
+  Nand(a=in[1], b=carry0, out=N1);
+
+  // sum (xor)
+  Nand(a=in[1], b=N1, out=C11);
+  Nand(a=carry0, b=N1, out=C21);
+  Nand(a=C11, b=C21, out=out[1]);
+
+  // carry (and)
+  Nand(a=N1, b=N1, out=carry1);
+
+
+  // -------------- i-2 --------------
+  Nand(a=in[2], b=carry1, out=N2);
+
+  // sum (xor)
+  Nand(a=in[2], b=N2, out=C12);
+  Nand(a=carry1, b=N2, out=C22);
+  Nand(a=C12, b=C22, out=out[2]);
+
+  // carry (and)
+  Nand(a=N2, b=N2, out=carry2);
+
+
+  // -------------- i-3 --------------
+  Nand(a=in[3], b=carry2, out=N3);
+
+  // sum (xor)
+  Nand(a=in[3], b=N3, out=C13);
+  Nand(a=carry2, b=N3, out=C23);
+  Nand(a=C13, b=C23, out=out[3]);
+
+  // carry (and)
+  Nand(a=N3, b=N3, out=carry3);
+
+
+  // -------------- i-4 --------------
+  Nand(a=in[4], b=carry3, out=N4);
+
+  // sum (xor)
+  Nand(a=in[4], b=N4, out=C14);
+  Nand(a=carry3, b=N4, out=C24);
+  Nand(a=C14, b=C24, out=out[4]);
+
+  // carry (and)
+  Nand(a=N4, b=N4, out=carry4);
+
+
+  // -------------- i-5 --------------
+  Nand(a=in[5], b=carry4, out=N5);
+
+  // sum (xor)
+  Nand(a=in[5], b=N5, out=C15);
+  Nand(a=carry4, b=N5, out=C25);
+  Nand(a=C15, b=C25, out=out[5]);
+
+  // carry (and)
+  Nand(a=N5, b=N5, out=carry5);
+
+
+  // -------------- i-6 --------------
+  Nand(a=in[6], b=carry5, out=N6);
+
+  // sum (xor)
+  Nand(a=in[6], b=N6, out=C16);
+  Nand(a=carry5, b=N6, out=C26);
+  Nand(a=C16, b=C26, out=out[6]);
+
+  // carry (and)
+  Nand(a=N6, b=N6, out=carry6);
+
+
+  // -------------- i-7 --------------
+  Nand(a=in[7], b=carry6, out=N7);
+
+  // sum (xor)
+  Nand(a=in[7], b=N7, out=C17);
+  Nand(a=carry6, b=N7, out=C27);
+  Nand(a=C17, b=C27, out=out[7]);
+
+
+  // Заранее страшие 8 бит
+
+  // -------------- i-8 --------------
+  Nand(a=in[8], b=true, out=N8);
+
+  // sum (xor)
+  Nand(a=in[8], b=N8, out=C18);
+  Nand(a=true, b=N8, out=C28);
+  Nand(a=C18, b=C28, out=highInc8);
+
+  // carry (and)
+  Nand(a=N8, b=N8, out=carry8);
+
+
+  // -------------- i-9 --------------
+  Nand(a=in[9], b=carry8, out=N9);
+
+  // sum (xor)
+  Nand(a=in[9], b=N9, out=C19);
+  Nand(a=carry8, b=N9, out=C29);
+  Nand(a=C19, b=C29, out=highInc9);
+
+  // carry (and)
+  Nand(a=N9, b=N9, out=carry9);
+
+
+  // -------------- i-10 --------------
+  Nand(a=in[10], b=carry9, out=N10);
+
+  // sum (xor)
+  Nand(a=in[10], b=N10, out=C110);
+  Nand(a=carry9, b=N10, out=C210);
+  Nand(a=C110, b=C210, out=highInc10);
+
+  // carry (and)
+  Nand(a=N10, b=N10, out=carry10);
+
+
+  // -------------- i-11 --------------
+  Nand(a=in[11], b=carry10, out=N11);
+
+  // sum (xor)
+  Nand(a=in[11], b=N11, out=C111);
+  Nand(a=carry10, b=N11, out=C211);
+  Nand(a=C111, b=C211, out=highInc11);
+
+  // carry (and)
+  Nand(a=N11, b=N11, out=carry11);
+
+
+  // -------------- i-12 --------------
+  Nand(a=in[12], b=carry11, out=N12);
+
+  // sum (xor)
+  Nand(a=in[12], b=N12, out=C112);
+  Nand(a=carry11, b=N12, out=C212);
+  Nand(a=C112, b=C212, out=highInc12);
+
+  // carry (and)
+  Nand(a=N12, b=N12, out=carry12);
+
+
+  // -------------- i-13 --------------
+  Nand(a=in[13], b=carry12, out=N13);
+
+  // sum (xor)
+  Nand(a=in[13], b=N13, out=C113);
+  Nand(a=carry12, b=N13, out=C213);
+  Nand(a=C113, b=C213, out=highInc13);
+
+  // carry (and)
+  Nand(a=N13, b=N13, out=carry13);
+
+
+  // -------------- i-14 --------------
+  Nand(a=in[14], b=carry13, out=N14);
+
+  // sum (xor)
+  Nand(a=in[14], b=N14, out=C114);
+  Nand(a=carry13, b=N14, out=C214);
+  Nand(a=C114, b=C214, out=highInc14);
+
+  // carry (and)
+  Nand(a=N14, b=N14, out=carry14);
+
+  // -------------- i-15 --------------
+  Nand(a=in[15], b=carry14, out=N15);
+
+  // sum (xor)
+  Nand(a=in[15], b=N15, out=C115);
+  Nand(a=carry14, b=N15, out=C215);
+  Nand(a=C115, b=C215, out=highInc15);
+
+  // Проверка, есть ли +1 к старшим битам от младших
+
+  // Первый уровень: 4 AND
+  And(a=in[0], b=in[1], out=a1);
+  And(a=in[2], b=in[3], out=a2);
+  And(a=in[4], b=in[5], out=a3);
+  And(a=in[6], b=in[7], out=a4);
+
+  // Второй уровень: 2 AND
+  And(a=a1, b=a2, out=b1);
+  And(a=a3, b=a4, out=b2);
+
+  // Третий уровень: финальное объединение
+  And(a=b1, b=b2, out=allOnesLow);
+
+
+
+  // Выбор между high и high+1
+
+  Mux(a=in[8], b=highInc8, sel=allOnesLow, out=out[8]);
+  Mux(a=in[9], b=highInc9, sel=allOnesLow, out=out[9]);
+  Mux(a=in[10], b=highInc10, sel=allOnesLow, out=out[10]);
+  Mux(a=in[11], b=highInc11, sel=allOnesLow, out=out[11]);
+  Mux(a=in[12], b=highInc12, sel=allOnesLow, out=out[12]);
+  Mux(a=in[13], b=highInc13, sel=allOnesLow, out=out[13]);
+  Mux(a=in[14], b=highInc14, sel=allOnesLow, out=out[14]);
+  Mux(a=in[15], b=highInc15, sel=allOnesLow, out=out[15]);
 }
