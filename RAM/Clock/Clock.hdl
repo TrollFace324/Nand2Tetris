@@ -13,16 +13,29 @@ CHIP Clock {
     OUT ticks[16], loop;
 
     PARTS:
-    Inc16(in=currentTicks, out=incrementedTicks);
-    Not16(in=incrementedTicks, out=negatedTicks);
-    Add16(a=period, b=negatedTicks, out=tickDifference, out[15]=isTicksGreaterThanPeriod);
-    Not(in=isTicksGreaterThanPeriod, out=isTicksLessThanPeriod);
+    // ------------------- Начало итерации счётчика -------------------
+
+    // Увеличиваем счётчик на +1 или же +такт
+    Inc16(in=ticksNow, out=ticksNext);
+
+    // Проверяем больше ли значения счётчика чем у period. Если period = ticks, то 11..11
+    Not16(in=ticksNext, out=notTicksNext);
+    Add16(a=period, b=notTicksNext, out=deltaTicks, out[15]=negativeDelta);
+
+    // Проверка нужно ли сбрасывать счётчик
+    Not(in=negativeDelta, out=notNegativeDelta);
     Not(in=reset, out=notReset);
-    And(a=notReset, b=isTicksLessThanPeriod, out=continueIncrementing);
-    Mux16(a=false, b=incrementedTicks, sel=continueIncrementing, out=updatedTicks);
-    DFF(in=isTicksGreaterThanPeriod, out=previousTickOverflow);
-    DFF(in=reset, out=previousReset);
-    Or(a=previousTickOverflow, b=previousReset, out=loop);
-    Register(in=updatedTicks, load=true, out=ticks, out=currentTicks);
+    And(a=notReset, b=notNegativeDelta, out=needToContinue);
+
+    // Если счётчик нужно сбросить, возвращаем 0
+    Mux16(a=false, b=ticksNext, sel=needToContinue, out=newTicks);
+
+    // Запоминаем, будет ли счётчик в следующем такте начинаиться с 0
+    DFF(in=negativeDelta, out=wasOverflow);
+    DFF(in=reset, out=wasReset);
+    Or(a=wasOverflow, b=wasReset, out=loop);
+
+    // Возвращаем итоговое значение счётчика и зацикливаем цикл
+    Register(in=newTicks, load=true, out=ticks, out=ticksNow);
 
 }
