@@ -39,3 +39,21 @@ CHIP Clock {
     Register(in=newTicks, load=true, out=ticks, out=ticksNow);
 
 }
+
+
+/*
+CHIP Clock {
+    IN period[16], reset;
+    OUT ticks[16], loop;
+
+    PARTS:
+    Inc16(in=a, out=b);
+    Not16(in=b, out=c);
+    Add16(a=period, b=c, out=d, out[15]=e);
+    Or(a=e, b=reset, out=f);
+    Mux16(a=b, b=false, sel=f, out=g);
+    Or(a=e, b=reset, out=h);
+    DFF(in=h, out=loop);
+    Register(in=g, load=true, out=ticks, out=a);
+}
+*/
