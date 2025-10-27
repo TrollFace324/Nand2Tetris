@@ -52,8 +52,7 @@ CHIP Clock {
     Add16(a=period, b=c, out=d, out[15]=e);
     Or(a=e, b=reset, out=f);
     Mux16(a=b, b=false, sel=f, out=g);
-    Or(a=e, b=reset, out=h);
-    DFF(in=h, out=loop);
+    DFF(in=f, out=loop);
     Register(in=g, load=true, out=ticks, out=a);
 }
 */
