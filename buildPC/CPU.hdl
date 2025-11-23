@@ -40,12 +40,11 @@ CHIP CPU {
 
     PARTS:
     // Chooseing value to register A
-    And(a=instruction[15], b=instruction[5], out=isFromALU);
-    Mux16(a=instruction, b=ALUOutput, sel=isFromALU, out=valueToRegA);
+    Not(in=instruction[15], out=isAInstruction);
+    Mux16(a=ALUOutput, b=instruction, sel=isAInstruction, out=valueToRegA);
     
     // Write value in register A
-    Not(in=instruction[15], out=isAInstruction);
-    Or(a=isAInstruction, b=isFromALU, out=isNewValueForA);
+    Or(a=isAInstruction, b=instruction[5], out=isNewValueForA);
     ARegister(in=valueToRegA, load=isNewValueForA, out=regA, out[0..14]=addressM);
 
     // Write value in register D
@@ -75,5 +74,4 @@ CHIP CPU {
     And(a=instruction[15], b=isAnyJump, out=needLoad);
 
     PC(in=regA, load=needLoad, inc=true, reset=reset, out[0..14]=pc);
-
 }
